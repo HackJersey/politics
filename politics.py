@@ -48,9 +48,6 @@ print len(people)
 render = web.template.render('templates/', base='layout')
 app = web.application((
 
-    '/',              'Index',
-    '/about',         'About',
-
     '/governors/(.+?)', 'Governors',
     '/governors', 'GovernorYears',
 
@@ -58,6 +55,9 @@ app = web.application((
     '/years/(.+?)/(.+?)',  'Seats',
     '/years/(.+?)',       'Districts',
     '/years',            'Years',
+
+    '/',              'Index',
+    '/about',         'About',
 
 ), globals())
 
