@@ -49,6 +49,7 @@ print len(people)
 render = web.template.render('templates/', base='layout')
 app = web.application((
     '/',            'Index',
+    '/about',       'About',
     '/candidates/',  'Candidates',
     '/candidate/(.+)',  'Candidate',
     '/legislators', 'Legislators',
@@ -84,6 +85,30 @@ class Index:
     'Render the base index file'
     def GET(self):
         return render.index()
+
+class About:
+    'Render the about page'
+    def GET(self):
+        return render.about()
+
+class Candidates:
+    def GET(self):
+        try:
+            json_data = open('static/njcandits.json', 'r')
+            data = json.load(json_data)
+            json_data.close()
+            web.header('Content-Type', 'application/json')
+            return pprint(data)
+        except:
+            return ''
+ 
+# usage: candidate/ENTITYID?CYCLE
+# returns: top industry contributors for a candidate based on entity id and cycle
+class Candidate:
+    def GET(self, id):
+    	date = web.input()
+        web.header('Content-Type', 'application/json')
+        return json.dumps(api.pol.industries(id, cycle=date))
 
 class Legislators:
     'List some legislators showing pulling data from the API'
