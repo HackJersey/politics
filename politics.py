@@ -1,6 +1,8 @@
 import web
 import json
 import sunlight
+from influenceexplorer import InfluenceExplorer
+api = InfluenceExplorer('2d657143a8b64b52b5a8d3a12df38328')
 
 # Load up the api key
 try:
@@ -12,7 +14,8 @@ except IOError:
 render = web.template.render('templates/', base='layout')
 app = web.application((
     '/',            'Index',
-    '/hi',          'SayHi',
+    '/candidates/',  'Candidates',
+    '/candidate/(.+)',  'Candidate',
     '/legislators', 'Legislators'
 ), globals())
 
@@ -21,10 +24,24 @@ class Index:
     def GET(self):
         return render.index()
 
-class SayHi:
-    'Say hi to the world!'
+class Candidates:
     def GET(self):
-        return 'Hey Hack Jersey!'
+        try:
+            json_data = open('static/njcandits.json', 'r')
+            data = json.load(json_data)
+            json_data.close()
+            web.header('Content-Type', 'application/json')
+            return pprint(data)
+        except:
+            return ''
+ 
+# usage: candidate/ENTITYID?CYCLE
+# returns: top industry contributors for a candidate based on entity id and cycle
+class Candidate:
+    def GET(self, id):
+    	date = web.input()
+        web.header('Content-Type', 'application/json')
+        return json.dumps(api.pol.industries(id, cycle=date))
 
 class Legislators:
     'List some legislators showing pulling data from the API'
