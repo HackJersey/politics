@@ -1,13 +1,11 @@
-# Helllo 
+# Helllo
 import web
 import json
 import sunlight
-
 import csv
 
 from influenceexplorer import InfluenceExplorer
 api = InfluenceExplorer('2d657143a8b64b52b5a8d3a12df38328')
-
 
 # Load up the api key
 try:
@@ -18,21 +16,31 @@ except IOError:
 # A person
 class Person:
     def __init__(self, row):
-        self.year = row[0]
-        self.name = row[2]
-        self.win = row[3]
-        self.ar = row[4]
-        self.seat = row[5]
-    def nice_hash(self):
+        self.year = row['year']
+        self.name = row['name']
+        self.win = row['win'] == 'W'
+        self.seat = row['seat']
+        self.district = row['district']
+        self.rec_id = row['rec_id']
+        self.entity_id = '4148b26f6f1c437cb50ea9ca4699417a' # row['entity_id']
+
+    # get the top contributors for these
+    def top_contribs(self):
+        web.header('Content-Type', 'application/json')
+        return json.dumps(api.pol.industries(self.entity_id, cycle=self.year))
+
+    # Our output format
+    def nice_data(self):
         d = {}
-        d['win'] = self.win == 'W'
+        d['top_contribs'] = self.top_contribs()
         d['name'] = self.name
+        d['win'] = self.win
         return d
 
 # read in the people
-with open('nj_candidates_more.tsv') as tsvin:
-    tsv = csv.reader(tsvin, delimiter='\t')
-    people = [Person(row) for row in tsv if len(row) > 3]
+with open('nj_state_candidates.json') as jsonin:
+    data = json.load(jsonin)
+    people = [Person(entry) for entry in data if entry['win']] # skip non-people
 
 # print the number of people
 print len(people)
@@ -45,18 +53,25 @@ app = web.application((
     '/candidates/',  'Candidates',
     '/candidate/(.+)',  'Candidate',
     '/legislators', 'Legislators',
+    '/years',       'Years',
     '/hi',          'SayHi',
     '/people/(\d{4})/(.+?)/(.+?)', 'Filter'
 ), globals())
 
+class Years:
+    'Filter the data per year, ar, and seat'
+    def GET(self):
+        global people
+        return json.dumps(list(set([p.year for p in people if p])))
+
 class Filter:
     'Filter the data per year, ar, and seat'
-    def GET(self, year, ar, seat):
+    def GET(self, year, district, seat):
         global people
         pep = [x for x in people if x.year == year]
-        pep = [x for x in pep if x.ar == ar]
+        pep = [x for x in pep if x.district == district]
         pep = [x for x in pep if x.seat == seat]
-        return json.dumps([p.nice_hash() for p in pep])
+        return json.dumps([p.nice_data() for p in pep])
 
 class Index:
     'Render the base index file'
