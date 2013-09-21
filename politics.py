@@ -2,6 +2,13 @@ import web
 import json
 import sunlight
 
+# Load up the api key
+try:
+    with open('sunlight.key') as f: sunlight.API_KEY = f.read.strip()
+except IOError:
+    print 'Loading key from environment'
+
+# map up a server
 app = web.application((
     '/hi',          'SayHi',
     '/legislators', 'Legislators'
