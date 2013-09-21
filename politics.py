@@ -9,7 +9,7 @@ except IOError:
     print 'Loading key from environment'
 
 # map up a server
-render = web.template.render('templates/')
+render = web.template.render('templates/', base='layout')
 app = web.application((
     '/',            'Index',
     '/hi',          'SayHi',
