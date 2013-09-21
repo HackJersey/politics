@@ -2,15 +2,17 @@ import web
 
 # This is our router
 urls = (
-    '/(.*)', 'politics'
+    '/hi', 'politics.SayHi'
 )
 
 # create a new application
 app = web.application(urls, globals())
 
-# And this is our app
-class politics:
-    def GET(self, name):
+# Say hi to the world!
+class SayHi:
+
+    # We'll say hi to anyone.
+    def GET(self):
         return 'Hey Hack Jersey!'
 
 # Run the application
