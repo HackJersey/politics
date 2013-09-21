@@ -1,4 +1,4 @@
-# Helllo 
+# Helllo
 import web
 import json
 import sunlight
@@ -13,21 +13,18 @@ except IOError:
 # A person
 class Person:
     def __init__(self, row):
-        self.year = row[0]
-        self.name = row[2]
-        self.win = row[3]
-        self.ar = row[4]
-        self.seat = row[5]
-    def nice_hash(self):
-        d = {}
-        d['win'] = self.win == 'W'
-        d['name'] = self.name
-        return d
+        self.year = row['year']
+        self.name = row['name']
+        self.win = row['win'] == 'W'
+        self.seat = row['seat']
+        self.district = row['district']
+        self.rec_id = row['rec_id']
+        self.entity_id = row['entity_id']
 
 # read in the people
-with open('nj_candidates_more.tsv') as tsvin:
-    tsv = csv.reader(tsvin, delimiter='\t')
-    people = [Person(row) for row in tsv if len(row) > 3]
+with open('nj_state_candidates.json') as jsonin:
+    data = json.load(jsonin)
+    people = [Person(entry) for entry in data if entry['win']] # skip non-people
 
 # print the number of people
 print len(people)
@@ -43,12 +40,12 @@ app = web.application((
 
 class Filter:
     'Filter the data per year, ar, and seat'
-    def GET(self, year, ar, seat):
+    def GET(self, year, district, seat):
         global people
         pep = [x for x in people if x.year == year]
-        pep = [x for x in pep if x.ar == ar]
+        pep = [x for x in pep if x.district == district]
         pep = [x for x in pep if x.seat == seat]
-        return json.dumps([p.nice_hash() for p in pep])
+        return json.dumps([p.__dict__ for p in pep])
 
 class Index:
     'Render the base index file'
