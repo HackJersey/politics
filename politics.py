@@ -9,10 +9,17 @@ except IOError:
     print 'Loading key from environment'
 
 # map up a server
+render = web.template.render('templates/')
 app = web.application((
+    '/',            'Index',
     '/hi',          'SayHi',
     '/legislators', 'Legislators'
 ), globals())
+
+class Index:
+    'Render the base index file'
+    def GET(self):
+        return render.index()
 
 class SayHi:
     'Say hi to the world!'
