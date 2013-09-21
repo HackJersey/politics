@@ -22,7 +22,7 @@ class Person:
         self.seat = row['seat']
         self.district = row['district']
         self.rec_id = row['rec_id']
-        self.entity_id = '' # row['entity_id']
+        self.entity_id = row['entity_id']
 
     # get the top contributors for these
     def top_contribs(self):
@@ -37,7 +37,7 @@ class Person:
         return d
 
 # read in the people
-with open('nj_state_candidates.json') as jsonin:
+with open('new_nj.json') as jsonin:
     data = json.load(jsonin)
     people = [Person(entry) for entry in data if entry['win']] # skip non-people
 
