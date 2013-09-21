@@ -22,12 +22,11 @@ class Person:
         self.seat = row['seat']
         self.district = row['district']
         self.rec_id = row['rec_id']
-        self.entity_id = '4148b26f6f1c437cb50ea9ca4699417a' # row['entity_id']
+        self.entity_id = 'f0bc8ebfa30545778d012ecb984882eb' # row['entity_id']
 
     # get the top contributors for these
     def top_contribs(self):
-        web.header('Content-Type', 'application/json')
-        return json.dumps(api.pol.industries(self.entity_id, cycle=self.year))
+        return api.pol.industries(self.entity_id, cycle=self.year)
 
     # Our output format
     def nice_data(self):
@@ -76,9 +75,13 @@ class Filter:
     'Filter the data per year, ar, and seat'
     def GET(self, year, district, seat):
         global people
+        pep = people
         pep = [x for x in people if x.year == year]
-        pep = [x for x in pep if x.district == district]
-        pep = [x for x in pep if x.seat == seat]
+        if district == 'gov':
+            pep = [x for x in pep if x.seat is None]
+        else:
+            pep = [x for x in pep if x.district == district]
+            pep = [x for x in pep if x.seat == seat]
         return json.dumps([p.nice_data() for p in pep])
 
 class Index:
@@ -90,25 +93,6 @@ class About:
     'Render the about page'
     def GET(self):
         return render.about()
-
-class Candidates:
-    def GET(self):
-        try:
-            json_data = open('static/njcandits.json', 'r')
-            data = json.load(json_data)
-            json_data.close()
-            web.header('Content-Type', 'application/json')
-            return pprint(data)
-        except:
-            return ''
- 
-# usage: candidate/ENTITYID?CYCLE
-# returns: top industry contributors for a candidate based on entity id and cycle
-class Candidate:
-    def GET(self, id):
-    	date = web.input()
-        web.header('Content-Type', 'application/json')
-        return json.dumps(api.pol.industries(id, cycle=date))
 
 class Legislators:
     'List some legislators showing pulling data from the API'
