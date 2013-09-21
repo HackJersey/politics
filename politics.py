@@ -6,7 +6,7 @@ import csv
 
 # Load up the api key
 try:
-    with open('sunlight.key') as f: sunlight.API_KEY = f.read.strip()
+    with open('sunlight.key') as f: sunlight.API_KEY = f.read().strip()
 except IOError:
     print 'Loading key from environment'
 
