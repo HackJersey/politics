@@ -26,6 +26,8 @@ class Person:
 
     # get the top contributors for these
     def top_contribs(self):
+        print self.entity_id
+        print self.year
         return api.pol.industries(self.entity_id, cycle=self.year)
 
     # Our output format
@@ -87,8 +89,8 @@ class Filter:
         global people
         pep = people
         pep = [x for x in people if x.year == year]
-        pep = [x for x in pep if x.seat == seat]
         if seat != 'state:governor':
+            pep = [x for x in pep if x.seat == seat]
             pep = [x for x in pep if x.district == district]
         return json.dumps([p.nice_data() for p in pep])
 
