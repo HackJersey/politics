@@ -1,0 +1,111 @@
+$var title: Hack that Jersey!
+  
+        
+<script type="text/javascript">
+
+      var randomNumbers = function() { 
+        var numbers = [];
+        for (var i = 0; i < 20; i++) {
+          numbers.push(parseInt(Math.random() * 19) + 1);
+        }
+        return numbers;
+      };
+
+      var randomNames = function() { 
+        var names = [];
+        for (var i = 0; i < 20; i++) {
+          names.push(String.fromCharCode(65 + Math.random() * 25) + String.fromCharCode(65 + Math.random() * 25) + String.fromCharCode(65 + Math.random() * 25));
+        }
+        return names;
+      };
+
+      var names = randomNames();
+      var leftData = randomNumbers();  
+      var rightData = randomNumbers();
+      console.log("N"+names);
+      console.log("L"+leftData);
+      console.log("R"+rightData);
+
+      for (var i= 0; i< names.length; i++) {
+        console.log(names[i] + " from: " + leftData[i] + " to: " + rightData[i]);  
+      }
+
+      var labelArea = 160;
+
+      var chart,
+          width = 400,
+          bar_height = 20,
+          height = bar_height * (names.length);
+
+      var rightOffset = width + labelArea;
+
+      var chart = d3.select("body")
+        .append('svg')
+        .attr('class', 'chart')
+        .attr('width', labelArea + width + width)
+        .attr('height', height);
+      
+      var xFrom = d3.scale.linear()
+         .domain([0, d3.max(leftData)])
+         .range([0, width]);
+
+      var y = d3.scale.ordinal()
+         .domain(names)
+         .rangeBands([10, height]);
+
+      var yPosByIndex = function(d, index){ return y(index); } 
+
+      chart.selectAll("rect.left")
+        .data(leftData)
+        .enter().append("rect")
+        .attr("x", function(pos) { return width - xFrom(pos); })
+        .attr("y", yPosByIndex)
+        .attr("class", "left")
+        .attr("width", xFrom)
+        .attr("height", y.rangeBand()); 
+
+      chart.selectAll("text.leftscore")
+        .data(leftData)
+        .enter().append("text")
+        .attr("x", function(d) { return width - xFrom(d); })
+        .attr("y", function(d, z){ return y(z) + y.rangeBand()/2; } )
+        .attr("dx", "20")
+        .attr("dy", ".36em")
+        .attr("text-anchor", "end")
+        .attr('class', 'leftscore')
+        .text(String);
+
+      chart.selectAll("text.name")
+        .data(names)
+        .enter().append("text")
+        .attr("x", (labelArea / 2) + width)
+        .attr("y", function(d){ return y(d) + y.rangeBand()/2; } )
+        .attr("dy", ".20em")
+        .attr("text-anchor", "middle")
+        .attr('class', 'name')
+        .text(String);
+
+      var xTo = d3.scale.linear()
+         .domain([0, d3.max(rightData)])
+         .range([0, width]);
+
+      chart.selectAll("rect.right")
+        .data(rightData)
+        .enter().append("rect")
+        .attr("x", rightOffset)
+        .attr("y", yPosByIndex)
+        .attr("class", "right")
+        .attr("width", xTo)
+        .attr("height", y.rangeBand()); 
+
+      chart.selectAll("text.score")
+        .data(rightData)
+        .enter().append("text")
+        .attr("x", function(d) { return xTo(d) +  rightOffset; })
+        .attr("y", function(d,z){ return y(z) + y.rangeBand()/2; } )
+        .attr("dx", -5)
+        .attr("dy", ".36em")
+        .attr("text-anchor", "end")
+        .attr('class', 'score')
+        .text(String);
+    </script>
