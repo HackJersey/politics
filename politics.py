@@ -22,7 +22,7 @@ class Person:
         self.seat = row['seat']
         self.district = row['district']
         self.rec_id = row['rec_id']
-        self.entity_id = 'f0bc8ebfa30545778d012ecb984882eb' # row['entity_id']
+        self.entity_id = row['entity_id']
 
     # get the top contributors for these
     def top_contribs(self):
