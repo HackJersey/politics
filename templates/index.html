@@ -26,26 +26,23 @@ $var title: Hack that Jersey!
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
           <h1>{{main.title}}</h1>
-          <p>{{main.help}}</p>
           <div class="row">
-
+              <div class="col-sm-12">
+                <form class="form-horizontal" role="form">
+                  <div class="form-group">
+                    <label for="inputEmail1" class="col-lg-2 control-label">Pick a Year</label>
+                    <select ng-model="main.year" ng-options="year for year in main.years"></select>
+                  </div>
+                </form>
+              </div>
           </div><!--/row-->
         </div><!--/span-->
 
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
           <div class="well sidebar-nav">
             <ul class="nav">
-              <li>Sidebar</li>
-              <li class="active"><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li>Sidebar</li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li>Sidebar</li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
+              <li>More ...</li>
+              <li class="active"><a href="http://hackjersey.com">HackJersey</a></li>
             </ul>
           </div><!--/.well -->
         </div><!--/span-->
