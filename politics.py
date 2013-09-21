@@ -26,8 +26,6 @@ class Person:
 
     # get the top contributors for these
     def top_contribs(self):
-        print self.entity_id
-        print self.year
         return api.pol.industries(self.entity_id, cycle=self.year)
 
     # Our output format
@@ -50,17 +48,33 @@ print len(people)
 render = web.template.render('templates/', base='layout')
 app = web.application((
 
-    '/',              'Index',
-    '/about',         'About',
-    '/races/(.+?)',     'Districts',
-    '/people/(\d{4})/(.+?)/(.+?)', 'Filter',
+    '/governors/(.+?)', 'Governors',
+    '/governors', 'GovernorYears',
 
     '/years/(.+?)/(.+?)/(.+?)', 'Filter',
     '/years/(.+?)/(.+?)',  'Seats',
     '/years/(.+?)',       'Districts',
     '/years',            'Years',
 
+    '/',              'Index',
+    '/about',         'About',
+
 ), globals())
+
+class GovernorYears:
+    'Governor year data'
+    def GET(self):
+        global people
+        pep = [x for x in people if x.seat == 'state:governor']
+        return json.dumps(list(set([p.year for p in pep])))
+
+class Governors:
+    'Governors for a year'
+    def GET(self, year):
+        global people
+        pep = [x for x in people if x.year == year]
+        pep = [x for x in pep if x.seat == 'state:governor']
+        return json.dumps([p.nice_data() for p in pep])
 
 class Districts:
     'Races for a year'
@@ -87,11 +101,9 @@ class Filter:
     'Filter the data per year, ar, and seat'
     def GET(self, year, district, seat):
         global people
-        pep = people
         pep = [x for x in people if x.year == year]
-        if seat != 'state:governor':
-            pep = [x for x in pep if x.seat == seat]
-            pep = [x for x in pep if x.district == district]
+        pep = [x for x in pep if x.seat == seat]
+        pep = [x for x in pep if x.district == district]
         return json.dumps([p.nice_data() for p in pep])
 
 class Index:
