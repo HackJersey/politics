@@ -52,9 +52,16 @@ app = web.application((
     '/candidates/',  'Candidates',
     '/candidate/(.+)',  'Candidate',
     '/legislators', 'Legislators',
+    '/years',       'Years',
     '/hi',          'SayHi',
     '/people/(\d{4})/(.+?)/(.+?)', 'Filter'
 ), globals())
+
+class Years:
+    'Filter the data per year, ar, and seat'
+    def GET(self):
+        global people
+        return json.dumps(list(set([p.year for p in people if p])))
 
 class Filter:
     'Filter the data per year, ar, and seat'
