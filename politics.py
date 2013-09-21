@@ -50,13 +50,13 @@ app = web.application((
 
     '/',              'Index',
     '/about',         'About',
-    '/races/(.+)',     'Districts',
+    '/races/(.+?)',     'Districts',
     '/people/(\d{4})/(.+?)/(.+?)', 'Filter',
 
+    '/years/(.+?)/(.+?)/(.+?)', 'Filter',
+    '/years/(.+?)/(.+?)',  'Seats',
+    '/years/(.+?)',       'Districts',
     '/years',            'Years',
-    '/years/(.+)',       'Districts',
-    '/years/(.+)/(.+)',  'Seats',
-    '/years/(.+)/(.+)/(.+)', 'Filter',
 
 ), globals())
 
