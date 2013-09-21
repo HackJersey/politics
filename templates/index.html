@@ -18,7 +18,7 @@ $var title: Hack that Jersey!
       </div><!-- /.container -->
     </div><!-- /.navbar -->
 
-    <div class="container" ng-controller="MainCtrl">
+    <div class="container" ng-controller="MainCtrl" ng-cloak>
 
       <div class="row row-offcanvas row-offcanvas-right">
         <div class="col-xs-12 col-sm-9">
@@ -30,8 +30,19 @@ $var title: Hack that Jersey!
               <div class="col-sm-12">
                 <form class="form-horizontal" role="form">
                   <div class="form-group">
-                    <label for="inputEmail1" class="col-lg-2 control-label">Pick a Year</label>
-                    <select ng-model="main.year" ng-options="year for year in main.years"></select>
+                    <label for="year" class="col-lg-2 control-label">Pick a Year</label>
+                    <select id="year" ng-model="main.year" ng-options="year for year in main.years"></select>
+                  </div>
+                  <div class="form-group">
+                    <label for="race" class="col-lg-2 control-label">Pick a Race</label>
+                    <select id="race" ng-model="main.race" ng-options="race.name for race in main.races"></select>
+                  </div>
+                  <div class="form-group">
+                    <label for="candidate" class="col-lg-2 control-label">Pick a Race</label>
+                    <select id="candidate" ng-model="main.candidate" ng-options="candidate.name for candidate in main.candidates"></select>
+                  </div>
+                  <div ng-show="showData">
+                    <h1>The Scoop</h1>
                   </div>
                 </form>
               </div>
