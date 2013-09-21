@@ -41,6 +41,7 @@ print len(people)
 render = web.template.render('templates/', base='layout')
 app = web.application((
     '/',            'Index',
+    '/about',       'About',
     '/candidates/',  'Candidates',
     '/candidate/(.+)',  'Candidate',
     '/legislators', 'Legislators',
@@ -61,6 +62,11 @@ class Index:
     'Render the base index file'
     def GET(self):
         return render.index()
+
+class About:
+    'Render the about page'
+    def GET(self):
+        return render.about()
 
 class Candidates:
     def GET(self):
