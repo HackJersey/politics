@@ -21,7 +21,7 @@ $var title: Hack that Jersey!
                   </div>
                   <div class="form-group">
                     <label for="seat" class="col-lg-2 control-label">Pick a Seat</label>
-                    <select class="form-control" id="seat" ng-model="seat" ng-options="seat for seat in seats"></select>
+                    <select ng-change="loadCandidates()" class="form-control" id="seat" ng-model="seat" ng-options="seat for seat in seats"></select>
                   </div>
                   <div ng-show="showData">
                     {{candidates | json}}
