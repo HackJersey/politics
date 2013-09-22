@@ -1,5 +1,7 @@
 /* Not supposed to use jQuery in a controller, but we've only
-   got four minutes to save the world
+ * got four minutes to save the world
+ *
+ * @broadstreetads
 */
 function MainCtrl($scope) {
 
