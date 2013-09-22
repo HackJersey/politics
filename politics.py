@@ -37,7 +37,7 @@ class Person:
         return d
 
 # read in the people
-with open('new_nj.json') as jsonin:
+with open('data/nj-data.json') as jsonin:
     data = json.load(jsonin)
     people = [Person(entry) for entry in data if entry['win']] # skip non-people
 

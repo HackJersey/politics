@@ -1,7 +1,6 @@
 var hackjersey = angular.module('hackjersey', []);
 
-/* Not supposed to use jQuery in a controller, but we've only
- * got four minutes to save the world
+/* Written w/ angular.js
  *
  * @broadstreetads
 */
@@ -60,8 +59,16 @@ hackjersey.controller('MainCtrl', function($scope, $http) {
      */
     $scope.loadCandidates = function() {
         $scope.loadItems('/years/' + $scope.year + '/' + $scope.district + '/' + $scope.seat, 'candidates', function() {
-            // noop
+            $scope.drawCharts();
         });
+    }
+
+    /**
+     * Draw the charts for the loaded data/candidates
+     */
+    $scope.drawCharts = function() {
+        $scope.charts.length = 0;
+
     }
 
     /**
