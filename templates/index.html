@@ -12,6 +12,11 @@ $var title: Hack that Jersey!
               <div class="col-sm-12">
                 <form class="form-horizontal" role="form">
                   <div class="form-group">
+                    <label for="year" class="col-lg-2 control-label">Quick Look:</label>
+                    <a class="btn btn-default btn-sm" href="#" ng-click="goToSeat('2012', 'NJ-16', 'state:lower')">2012 / NJ-16 / State:Lower</a>
+                    <a class="btn btn-default btn-sm" href="#" ng-click="goToSeat('2012', 'NJ-26', 'state:lower')">2012 / NJ-26 / State:Lower</a>
+                  </div>
+                  <div class="form-group">
                     <label for="year" class="col-lg-2 control-label">Pick a Year</label>
                     <select  class="form-control" ng-change="loadDistricts()" id="year" ng-model="year" ng-options="year for year in years"></select>
                   </div>
@@ -25,6 +30,9 @@ $var title: Hack that Jersey!
                   </div>
                   <div ng-show="showData">
                     {{candidates | json}}
+                  </div>
+                  <div ng-repeat="chart in charts">
+                    <highchart id="chart{{ \$index }}" config="chart.config" style="width: 100%;"></highchart>
                   </div>
                 </form>
               </div>

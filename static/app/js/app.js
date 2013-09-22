@@ -1,4 +1,4 @@
-var hackjersey = angular.module('hackjersey', []);
+var hackjersey = angular.module('hackjersey', ['highcharts-ng']);
 
 /* Written w/ angular.js
  *
@@ -59,7 +59,7 @@ hackjersey.controller('MainCtrl', function($scope, $http) {
      */
     $scope.loadCandidates = function() {
         $scope.loadItems('/years/' + $scope.year + '/' + $scope.district + '/' + $scope.seat, 'candidates', function() {
-            $scope.drawCharts();
+            //$scope.drawCharts();
         });
     }
 
@@ -68,6 +68,48 @@ hackjersey.controller('MainCtrl', function($scope, $http) {
      */
     $scope.drawCharts = function() {
         $scope.charts.length = 0;
+
+        for(var i in $scope.candidates) {
+
+            var config = null;
+            if($scope.candidates[i].top_contribs.length) {
+                var industries = [];
+                var amounts    = [];
+
+                /* Load industries data */
+                for(var c in $scope.candidates[i].top_contribs) 
+                    industries.push($scope.candidates[i].top_contribs[c].name);
+
+                /* Load amounts data */
+                for(var c in $scope.candidates[i].top_contribs) 
+                    amounts.push($scope.candidates[i].top_contribs[c].amount);
+
+                config = {
+                    chart: {
+                        type: 'bar'
+                    },
+                    series: [{
+                        data: amounts
+                    }],
+                    title: {
+                        text: 'Industry Contributions for ' + $scope.candidates[i].name
+                    },
+                    xAxis: {
+                        categories: industries,
+                        title: {
+                            text: 'Industry Name'
+                        }
+                    },
+                    loading: false
+                };
+            }
+
+            $scope.charts.push({
+                candidateId: i,
+                candidateName: $scope.candidates[i].name,
+                config: config
+            })
+        }
 
     }
 
