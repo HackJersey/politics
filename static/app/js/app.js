@@ -18,10 +18,10 @@ function MainCtrl($scope) {
     $scope.race      = $scope.races[0];
 
     $scope.showCandidates = false;
-    $scope.candidates     = [{id: 0, name: 'Mitt Romney'}];
+    $scope.candidates     = [];
     $scope.candidate      = $scope.candidates[0];
 
-    $scope.showData  = false;
+    $scope.showData  = true;
 
     $scope.init = function() {
         $scope.title = 'Campaign Contribution by Industry';
@@ -31,25 +31,45 @@ function MainCtrl($scope) {
           for(var i in years)
                 $scope.years.push(years[i]);
           $scope.year = $scope.years[0];
-
         });
+
+        $scope.loadDistricts();
     }
 
     $scope.loadDistricts = function() {
+        $scope.districts.length = 0;
+        
         $scope.get('/years/' + $scope.year, function(districts) {
           for(var i in districts)
                 $scope.districts.push(districts[i]);
 
           $scope.district = $scope.districts[0];
         });
+
+        $scope.loadSeats();
     }
 
     $scope.loadSeats = function() {
+        $scope.seats.length = 0;
+
         $scope.get('/years/' + $scope.year + '/' + $scope.district, function(seats) {
           for(var i in seats)
                 $scope.seats.push(seats[i]);
 
           $scope.seat = $scope.seats[0];
+        });
+
+        $scope.loadCandidates();
+    }
+
+    $scope.loadCandidates = function() {
+        $scope.candidates.length = 0;
+
+        $scope.get('/years/' + $scope.year + '/' + $scope.district + '/' + $scope.seat, function(candidates) {
+          for(var i in candidates)
+                $scope.candidates.push(candidates[i]);
+
+          $scope.candidate = $scope.candidates[0];
         });
     }
 
