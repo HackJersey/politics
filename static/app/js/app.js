@@ -1,7 +1,6 @@
 /* Not supposed to use jQuery in a controller, but we've only
    got four minutes to save the world
 */
-
 function MainCtrl($scope) {
 
     $scope.years = [];
@@ -13,66 +12,62 @@ function MainCtrl($scope) {
     $scope.seats = [];
     $scope.seat  = null;
 
-    $scope.showRaces = false;
-    $scope.races     = [{id: 0, name: 'Race #1'}];
-    $scope.race      = $scope.races[0];
-
-    $scope.showCandidates = false;
     $scope.candidates     = [];
     $scope.candidate      = $scope.candidates[0];
 
     $scope.showData  = true;
 
+    /**
+     * Initialize the data and kick off the population of the menus
+     */
     $scope.init = function() {
         $scope.title = 'Campaign Contribution by Industry';
         $scope.help  = 'Pick a Year';
-
-        $scope.get('/years', function(years) {
-          for(var i in years)
-                $scope.years.push(years[i]);
-          $scope.year = $scope.years[0];
-        });
-
+        $scope.loadItems('/years', 'years');
+        $scope.year  = $scope.years[0];
         $scope.loadDistricts();
     }
 
+    /**
+     * Load districts
+     */
     $scope.loadDistricts = function() {
-        $scope.districts.length = 0;
-        
-        $scope.get('/years/' + $scope.year, function(districts) {
-          for(var i in districts)
-                $scope.districts.push(districts[i]);
-
-          $scope.district = $scope.districts[0];
-        });
-
+        $scope.loadItems('/years/' + $scope.year, 'districts');
+        $scope.district = $scope.districts[0];
         $scope.loadSeats();
     }
 
+    /**
+     * Load seats
+     */
     $scope.loadSeats = function() {
-        $scope.seats.length = 0;
-
-        $scope.get('/years/' + $scope.year + '/' + $scope.district, function(seats) {
-          for(var i in seats)
-                $scope.seats.push(seats[i]);
-
-          $scope.seat = $scope.seats[0];
-        });
-
+        $scope.loadItems('/years/' + $scope.year + '/' + $scope.district, 'seats');
+        $scope.seat = $scope.seats[0];
         $scope.loadCandidates();
     }
 
+    /**
+     * Load candidates
+     */
     $scope.loadCandidates = function() {
-        $scope.candidates.length = 0;
+        $scope.loadItems('/years/' + $scope.year + '/' + $scope.district + '/' + $scope.seat, 'candidates');
+    }
 
-        $scope.get('/years/' + $scope.year + '/' + $scope.district + '/' + $scope.seat, function(candidates) {
-          for(var i in candidates)
-                $scope.candidates.push(candidates[i]);
-
-          $scope.candidate = $scope.candidates[0];
+    /**
+     * Generic method for calling a URI which returns a json array, and placing it
+     * into an array by the given name on the scope
+     */
+    $scope.loadItems = function(uri, name) {
+        $scope[name].length = 0;
+        $scope.get(uri, function(items) {
+          for(var i in items)
+                $scope[name].push(items[i]);
         });
     }
 
+    /**
+     * @TODO: Move this into an angular service
+     */
     $scope.get = function(uri, func) {
         $.ajax({
             type: 'GET',
@@ -84,5 +79,6 @@ function MainCtrl($scope) {
         });
     }
 
+    /* Go */
     $scope.init();
 };
