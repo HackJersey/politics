@@ -26,7 +26,7 @@ hackjersey.controller('MainCtrl', function($scope, $http) {
      * Initialize the data and kick off the population of the menus
      */
     $scope.init = function() {
-        $scope.title = 'Campaign Contribution by Industry';
+        $scope.title = 'Campaign Contributions by Industry';
         $scope.help  = 'Pick a Year';
         $scope.loadItems('/years', 'years', function() {
             $scope.year  = $scope.years[0];
