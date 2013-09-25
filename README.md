@@ -1,5 +1,4 @@
-`
-                                                       ,                              
+<pre style="font: 10px/5px monospace;">                                                       ,                              
                                                      :::                              
                                                    :::::                              
                                                    :::::                              
@@ -79,7 +78,7 @@
              ######.                                                                  
              #####                                                                    
               '`                                                                      
-`
+</pre>
 
 # politics
 
