@@ -1,23 +1,23 @@
 #Contributors
-##Core committers
+##Committers
 - John Crepezzi
+- Josh Engelberg
+- Eric Hellman 
 - Kenny Katzgrau
-- Tom Meagher
 - Joseph Kokenge
+- Patrick Murray
+- Tom Meagher
 - Eric Sagara
 - Kimi Wei
 
-##From the hack day at NJIT
+##At the hack day at NJIT
 - Samuel Carvalho
-- Josh Engelberg
-- Eric Hellman 
 - Margaret Kim
 - Yvonne Leow
-- Patrick Murray
 - Benjamin Scalera
 - Sebastian Serrano
 
-##Others who helped plan the project
+##Others who helped plan
 - Marco Chang
 - Bert Hartmann
 - Fred Kaimann 
